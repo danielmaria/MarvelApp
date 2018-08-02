@@ -2,11 +2,17 @@ package com.example.danielmaria.marvelapp.model;
 
 public class Series {
 
-    private String resourceURI;
     private String name;
+    private String resourceURI;
+
 
     public Series() {
 
+    }
+
+    public Series(String name, String resourceURI) {
+        this.name = name;
+        this.resourceURI = resourceURI;
     }
 
     public String getResourceURI() {

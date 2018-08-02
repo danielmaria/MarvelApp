@@ -18,16 +18,23 @@ public class HeroesAdapter extends RecyclerView.Adapter {
     private List<Hero> heros = new ArrayList<>();
     private Context context;
 
-    public HeroesAdapter(Context context, List<Hero> heroes) {
+    public interface OnHeroClicked{
+        void onClick(Hero hero);
+    }
+
+    OnHeroClicked onHeroClicked;
+
+    public HeroesAdapter(Context context, List<Hero> heroes, OnHeroClicked onHeroClicked) {
         this.context = context;
         this.heros = heroes;
+        this.onHeroClicked = onHeroClicked;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.heroes_item, parent, false);
 
-        return new HerosViewHolder(view);
+        return new HerosViewHolder(view, onHeroClicked, heros);
     }
 
     @Override
@@ -51,11 +58,18 @@ class HerosViewHolder extends RecyclerView.ViewHolder{
     TextView heroName;
     TextView heroId;
 
-    public HerosViewHolder(View itemView) {
+    public HerosViewHolder(View itemView, final HeroesAdapter.OnHeroClicked onHeroClicked, final List<Hero> heros) {
         super(itemView);
 
         heroName = (TextView) itemView.findViewById(R.id.heroe_name);
         heroId = (TextView) itemView.findViewById(R.id.hero_id);
+
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onHeroClicked.onClick(heros.get(getAdapterPosition()));
+            }
+        });
 
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class HeroFactory {
 
-    public static List<Hero> createHeros(JsonObject jsonObject){
+    public static List<Hero> createSimpleHero(JsonObject jsonObject){
         List<Hero> heros = new ArrayList<>();
         try {
             JSONObject json = new JSONObject(jsonObject.toString());
@@ -29,17 +29,6 @@ public class HeroFactory {
                 JSONObject characterJson = results.getJSONObject(i);
                 hero.setId(characterJson.getInt("id"));
                 hero.setName(characterJson.getString("name"));
-                hero.setDescription(characterJson.getString("description"));
-                JSONObject thumbNail = characterJson.getJSONObject("thumbnail");
-
-                hero.setThumbnail(thumbNail.getString("path") + thumbNail.getString("extension"));
-
-                hero.setComics(formatComics(characterJson.getJSONObject("comics").getJSONArray("items")));
-                hero.setSeries(formatSeries(characterJson.getJSONObject("series").getJSONArray("items")));
-                hero.setStories(formatStories(characterJson.getJSONObject("stories").getJSONArray(("items"))));
-                hero.setEvents(formatEvents(characterJson.getJSONObject("events").getJSONArray("items")));
-                hero.setUrls(formatUrls(characterJson.getJSONArray("urls")));
-
                 heros.add(hero);
             }
         } catch (JSONException e) {
@@ -47,6 +36,36 @@ public class HeroFactory {
         }
 
         return heros;
+    }
+
+    public static Hero createHero(JsonObject jsonObject){
+        Hero hero = new Hero();
+        try {
+            JSONObject json = new JSONObject(jsonObject.toString());
+
+            JSONArray results = json.getJSONObject("data").getJSONArray("results");
+            for (int i = 0; i < results.length(); i++) {
+
+                JSONObject characterJson = results.getJSONObject(i);
+                hero.setId(characterJson.getInt("id"));
+                hero.setName(characterJson.getString("name"));
+                hero.setDescription(characterJson.getString("description"));
+                JSONObject thumbNail = characterJson.getJSONObject("thumbnail");
+
+                hero.setThumbnail(thumbNail.getString("path") + "." + thumbNail.getString("extension"));
+
+                hero.setComics(formatComics(characterJson.getJSONObject("comics").getJSONArray("items")));
+                hero.setSeries(formatSeries(characterJson.getJSONObject("series").getJSONArray("items")));
+                hero.setStories(formatStories(characterJson.getJSONObject("stories").getJSONArray(("items"))));
+                hero.setEvents(formatEvents(characterJson.getJSONObject("events").getJSONArray("items")));
+                hero.setUrls(formatUrls(characterJson.getJSONArray("urls")));
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return hero;
     }
 
     private static List<Url> formatUrls(JSONArray urls) throws JSONException {

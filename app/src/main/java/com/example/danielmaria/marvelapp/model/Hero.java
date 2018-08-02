@@ -1,8 +1,9 @@
 package com.example.danielmaria.marvelapp.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Hero {
+public class Hero implements Serializable {
 
     private String name;
     private int id;
@@ -13,7 +14,7 @@ public class Hero {
     private List<Stories> stories;
     private List<Event> events;
     private List<Url> urls;
-    private List<Creator> creators;
+    //private List<Creator> creators;
 
 
     public Hero(){
@@ -94,13 +95,5 @@ public class Hero {
 
     public void setUrls(List<Url> urls) {
         this.urls = urls;
-    }
-
-    public List<Creator> getCreators() {
-        return creators;
-    }
-
-    public void setCreators(List<Creator> creators) {
-        this.creators = creators;
     }
 }

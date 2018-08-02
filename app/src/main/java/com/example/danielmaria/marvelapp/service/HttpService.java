@@ -1,5 +1,6 @@
 package com.example.danielmaria.marvelapp.service;
 
+import com.example.danielmaria.marvelapp.model.Comic;
 import com.example.danielmaria.marvelapp.model.Hero;
 import com.example.danielmaria.marvelapp.utils.MD5Utils;
 import com.google.gson.JsonObject;
@@ -10,7 +11,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.example.danielmaria.marvelapp.factory.HeroFactory.createHeros;
+import static com.example.danielmaria.marvelapp.factory.HeroFactory.createSimpleHero;
+import static com.example.danielmaria.marvelapp.factory.HeroFactory.createHero;
+import static com.example.danielmaria.marvelapp.factory.ComicFactory.createSimpleComics;
 
 public class HttpService {
     private HttpInterface api = HttpInterface.retrofit.create(HttpInterface.class);
@@ -25,6 +28,39 @@ public class HttpService {
         void fail();
     }
 
+    public interface GetComicListener {
+        void sucess(List<Comic> comics);
+        void fail();
+    }
+
+    public interface GetCharacterByIdListener {
+        void sucess(Hero comics);
+        void fail();
+    }
+
+
+    public void getComicsById(int id, final GetCharacterByIdListener getCharactersByIdListener) {
+        Call<JsonObject> call = api.getCharactersById(id, TIME_STAMP, PUBLIC_KEY, HASH);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                switch (response.code()){
+                    case 200:
+                        getCharactersByIdListener.sucess(createHero(response.body()));
+                        break;
+                    default:
+                        getCharactersByIdListener.fail();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                getCharactersByIdListener.fail();
+            }
+        });
+    }
+
     public void getCharacters(final GetCharactersListener getCharactersListener){
         Call<JsonObject> call = api.getCharacters(TIME_STAMP, PUBLIC_KEY, HASH);
         call.enqueue(new Callback<JsonObject>() {
@@ -32,7 +68,7 @@ public class HttpService {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 switch (response.code()){
                     case 200:
-                        getCharactersListener.success(createHeros(response.body()));
+                        getCharactersListener.success(createSimpleHero(response.body()));
                         break;
                     default:
                         getCharactersListener.fail();
@@ -43,6 +79,28 @@ public class HttpService {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 getCharactersListener.fail();
+            }
+        });
+    }
+
+    public void getComics(final GetComicListener getComicListener){
+        Call<JsonObject> call = api.getComics(TIME_STAMP, PUBLIC_KEY, HASH);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                switch (response.code()){
+                    case 200:
+                        getComicListener.sucess(createSimpleComics(response.body()));
+                        break;
+                    default:
+                        getComicListener.fail();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                getComicListener.fail();
             }
         });
     }

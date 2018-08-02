@@ -8,6 +8,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface HttpInterface {
@@ -18,11 +19,28 @@ public interface HttpInterface {
                 @Query("apikey") String publicKey,
                 @Query("hash") String hash);
 
+        @GET("characters/{id}")
+        Call<JsonObject> getCharactersById(
+                @Path("id") int characterId,
+                @Query("ts") String timeStamp,
+                @Query("apikey") String publicKey,
+                @Query("hash") String hash);
+
+        @GET("comics")
+        Call<JsonObject> getComics(
+                @Query("ts") String timeStamp,
+                @Query("apikey") String publicKey,
+                @Query("hash") String hash);
+
+
+
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd")
                 .create();
-        public static final Retrofit retrofit = new Retrofit.Builder()
+
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://gateway.marvel.com:443/v1/public/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
+
 }

@@ -1,8 +1,10 @@
 package com.example.danielmaria.marvelapp.view.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,7 @@ import com.example.danielmaria.marvelapp.R;
 import com.example.danielmaria.marvelapp.adapter.HeroesAdapter;
 import com.example.danielmaria.marvelapp.model.Hero;
 import com.example.danielmaria.marvelapp.service.HttpService;
+import com.example.danielmaria.marvelapp.view.HeroDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,7 @@ public class HeroFragment extends Fragment {
     private List<Hero> heros = new ArrayList<>();
     private HttpService httpService;
     private ProgressBar progressBar;
+    private ConstraintLayout errorMessage;
 
     @Nullable
     @Override
@@ -41,9 +45,9 @@ public class HeroFragment extends Fragment {
 
         herosRecycler = (RecyclerView) view.findViewById(R.id.hero_recycler);
         progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
+        errorMessage = (ConstraintLayout) view.findViewById(R.id.error_message);
 
         httpService.getCharacters(new HttpService.GetCharactersListener(){
-
             @Override
             public void success(List<Hero> characters) {
                 progressBar.setVisibility(View.GONE);
@@ -53,21 +57,24 @@ public class HeroFragment extends Fragment {
 
             @Override
             public void fail() {
-                //Algo deu errado
+                errorMessage.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
             }
         });
 
     }
 
-    private void setAdapter(){
-        heroesAdapter = new HeroesAdapter(getContext(), heros);
+    private void setAdapter() {
+        heroesAdapter = new HeroesAdapter(getContext(), heros, new HeroesAdapter.OnHeroClicked() {
+            @Override
+            public void onClick(Hero hero) {
+                Intent intent = new Intent(getActivity(), HeroDetailActivity.class);
+                intent.putExtra("hero", hero);
+
+                startActivity(intent);
+            }
+        });
         herosRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         herosRecycler.setAdapter(heroesAdapter);
-    }
-
-    private void mockHero(){
-        for(int i = 0; i < 3000; i++){
-            heros.add(new Hero("Heroi " + i, i + 10));
-        }
     }
 }

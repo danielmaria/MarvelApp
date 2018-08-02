@@ -10,9 +10,10 @@ public class Comic {
     private String variantDescription;
     private String description;
     private int pageCount;
+    private String thumbnail;
     private List<Url> urls;
     private List<Stories> stories;
-    private List<Creator> creators;
+    private Series series;
     private List<Hero> characters;
 
     public Comic() {
@@ -80,6 +81,14 @@ public class Comic {
         this.pageCount = pageCount;
     }
 
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
     public List<Url> getUrls() {
         return urls;
     }
@@ -96,12 +105,10 @@ public class Comic {
         this.stories = stories;
     }
 
-    public List<Creator> getCreators() {
-        return creators;
-    }
+    public Series getSeries() { return series; }
 
-    public void setCreators(List<Creator> creators) {
-        this.creators = creators;
+    public void setSeries(Series series) {
+        this.series = series;
     }
 
     public List<Hero> getCharacters() {
