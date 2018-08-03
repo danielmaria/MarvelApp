@@ -11,6 +11,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.danielmaria.marvelapp.factory.ComicFactory.createComic;
 import static com.example.danielmaria.marvelapp.factory.HeroFactory.createSimpleHero;
 import static com.example.danielmaria.marvelapp.factory.HeroFactory.createHero;
 import static com.example.danielmaria.marvelapp.factory.ComicFactory.createSimpleComics;
@@ -34,12 +35,17 @@ public class HttpService {
     }
 
     public interface GetCharacterByIdListener {
-        void sucess(Hero comics);
+        void sucess(Hero hero);
+        void fail();
+    }
+
+    public interface GetComicrByIdListener {
+        void sucess(Comic comics);
         void fail();
     }
 
 
-    public void getComicsById(int id, final GetCharacterByIdListener getCharactersByIdListener) {
+    public void getHeroById(int id, final GetCharacterByIdListener getCharactersByIdListener) {
         Call<JsonObject> call = api.getCharactersById(id, TIME_STAMP, PUBLIC_KEY, HASH);
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -57,6 +63,28 @@ public class HttpService {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 getCharactersByIdListener.fail();
+            }
+        });
+    }
+
+    public void getComicById(int id, final GetComicrByIdListener getComicrByIdListener) {
+        Call<JsonObject> call = api.getComicById(id, TIME_STAMP, PUBLIC_KEY, HASH);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                switch (response.code()){
+                    case 200:
+                        getComicrByIdListener.sucess(createComic(response.body()));
+                        break;
+                    default:
+                        getComicrByIdListener.fail();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                getComicrByIdListener.fail();
             }
         });
     }

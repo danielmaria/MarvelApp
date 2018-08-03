@@ -1,8 +1,9 @@
 package com.example.danielmaria.marvelapp.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Comic {
+public class Comic implements Serializable {
     private String resourceURI;
     private String name;
     private int id;

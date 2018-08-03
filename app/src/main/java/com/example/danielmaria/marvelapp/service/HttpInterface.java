@@ -26,6 +26,13 @@ public interface HttpInterface {
                 @Query("apikey") String publicKey,
                 @Query("hash") String hash);
 
+        @GET("comics/{id}")
+        Call<JsonObject> getComicById(
+                @Path("id") int characterId,
+                @Query("ts") String timeStamp,
+                @Query("apikey") String publicKey,
+                @Query("hash") String hash);
+
         @GET("comics")
         Call<JsonObject> getComics(
                 @Query("ts") String timeStamp,

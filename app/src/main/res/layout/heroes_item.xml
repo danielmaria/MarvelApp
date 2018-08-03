@@ -2,20 +2,35 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/item_comics_background"
-    android:layout_margin="10dp"
+    android:layout_marginTop="10dp"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
-    android:padding="5dp">
+    android:layout_height="80dp">
+
+    <ImageView
+        android:id="@+id/background_hero"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/item_heros_img_degrad"
+        />
 
     <TextView
         android:id="@+id/heroe_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="18dp"
         android:maxLines="1"
         android:ellipsize="end"
-        android:textColor="@color/colorText"/>
+        android:textColor="@color/colorText"
+        android:padding="3dp"/>
 
     <TextView
         android:layout_width="wrap_content"

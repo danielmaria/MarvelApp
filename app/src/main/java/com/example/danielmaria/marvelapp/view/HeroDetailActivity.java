@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.danielmaria.marvelapp.R;
-import com.example.danielmaria.marvelapp.adapter.HeroComicsAdapter;
 import com.example.danielmaria.marvelapp.adapter.SquareTitleAdapter;
 import com.example.danielmaria.marvelapp.model.Comic;
 import com.example.danielmaria.marvelapp.model.Event;
@@ -66,11 +65,12 @@ public class HeroDetailActivity extends AppCompatActivity {
         nameHero = findViewById(R.id.name_hero);
         imgHero = findViewById(R.id.img_hero);
 
-        httpService.getComicsById(hero.getId(), new HttpService.GetCharacterByIdListener() {
+        httpService.getHeroById(hero.getId(), new HttpService.GetCharacterByIdListener() {
             @Override
             public void sucess(Hero heroRequest) {
                 progressBar.setVisibility(View.GONE);
                 hero = heroRequest;
+
                 heroDescription.setText(hero.getDescription());
                 nameHero.setText(hero.getName());
 

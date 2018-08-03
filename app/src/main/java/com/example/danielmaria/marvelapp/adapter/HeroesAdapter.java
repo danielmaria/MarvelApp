@@ -5,8 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.danielmaria.marvelapp.R;
 import com.example.danielmaria.marvelapp.model.Hero;
 
@@ -15,7 +17,7 @@ import java.util.List;
 
 public class HeroesAdapter extends RecyclerView.Adapter {
 
-    private List<Hero> heros = new ArrayList<>();
+    private List<Hero> heros;
     private Context context;
 
     public interface OnHeroClicked{
@@ -45,11 +47,17 @@ public class HeroesAdapter extends RecyclerView.Adapter {
 
         holder.heroName.setText(hero.getName());
         holder.heroId.setText(String.valueOf(hero.getId()));
+        setImageHero(holder, hero);
     }
 
     @Override
     public int getItemCount() {
         return heros.size();
+    }
+
+    private void setImageHero(HerosViewHolder holder, Hero hero) {
+        holder.backgroundHero.setContentDescription("Imagem do " + hero.getName());
+        Glide.with(this.context).load(hero.getThumbnail()).into(holder.backgroundHero);
     }
 }
 
@@ -57,12 +65,14 @@ class HerosViewHolder extends RecyclerView.ViewHolder{
 
     TextView heroName;
     TextView heroId;
+    ImageView backgroundHero;
 
     public HerosViewHolder(View itemView, final HeroesAdapter.OnHeroClicked onHeroClicked, final List<Hero> heros) {
         super(itemView);
 
-        heroName = (TextView) itemView.findViewById(R.id.heroe_name);
-        heroId = (TextView) itemView.findViewById(R.id.hero_id);
+        this.heroName = itemView.findViewById(R.id.heroe_name);
+        this.heroId = itemView.findViewById(R.id.hero_id);
+        this.backgroundHero = itemView.findViewById(R.id.background_hero);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override

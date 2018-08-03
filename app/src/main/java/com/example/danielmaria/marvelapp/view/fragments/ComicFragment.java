@@ -1,5 +1,6 @@
 package com.example.danielmaria.marvelapp.view.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +20,8 @@ import com.example.danielmaria.marvelapp.adapter.ComicsAdapter;
 import com.example.danielmaria.marvelapp.model.Comic;
 import com.example.danielmaria.marvelapp.model.Hero;
 import com.example.danielmaria.marvelapp.service.HttpService;
+import com.example.danielmaria.marvelapp.view.ComicDetailActivity;
+import com.example.danielmaria.marvelapp.view.HeroDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +67,15 @@ public class ComicFragment extends Fragment {
     }
 
     private void setAdapter() {
-        comicsAdapter = new ComicsAdapter(getContext(), comics);
+        comicsAdapter = new ComicsAdapter(getContext(), comics, new ComicsAdapter.OnComicClicked() {
+            @Override
+            public void onClick(Comic comic) {
+                Intent intent = new Intent(getActivity(), ComicDetailActivity.class);
+                intent.putExtra("comic", comic);
+
+                startActivity(intent);
+            }
+        });
         comicsRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         comicsRecycler.setAdapter(comicsAdapter);
     }

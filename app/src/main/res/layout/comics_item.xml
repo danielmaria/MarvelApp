@@ -3,20 +3,35 @@
     android:layout_width="match_parent"
     android:layout_height="80dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="10dp"
-    android:background="@drawable/item_comics_background"
-    android:padding="5dp">
+    android:layout_marginTop="10dp">
 
+
+    <ImageView
+        android:id="@+id/background_comic"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/item_heros_img_degrad"
+        />
     <TextView
         android:id="@+id/name_comic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:maxLines="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:maxLines="2"
         android:ellipsize="end"
-        android:textColor="@color/colorText"/>
+        android:textColor="@color/colorText"
+        android:textAlignment="textEnd"
+        android:gravity="end"
+        android:padding="3dp"/>
     <TextView
         android:id="@+id/isbn_comic"
         android:layout_width="wrap_content"
@@ -24,5 +39,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:textColor="@color/colorText"
         />
+
 
 </android.support.constraint.ConstraintLayout>

@@ -29,6 +29,10 @@ public class HeroFactory {
                 JSONObject characterJson = results.getJSONObject(i);
                 hero.setId(characterJson.getInt("id"));
                 hero.setName(characterJson.getString("name"));
+
+                JSONObject thumbNail = characterJson.getJSONObject("thumbnail");
+                hero.setThumbnail(thumbNail.getString("path") + "." + thumbNail.getString("extension"));
+
                 heros.add(hero);
             }
         } catch (JSONException e) {

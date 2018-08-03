@@ -30,6 +30,9 @@ public class ComicFactory {
                 comic.setId(comicJson.getInt("id"));
                 comic.setIsbn(comicJson.getString("isbn"));
 
+                JSONObject thumbNail = comicJson.getJSONObject("thumbnail");
+                comic.setThumbnail(thumbNail.getString("path") + "." + thumbNail.getString("extension"));
+
                 comics.add(comic);
             }
         } catch (JSONException e) {
@@ -38,8 +41,8 @@ public class ComicFactory {
         return comics;
     }
 
-    public static List<Comic> createComics (JsonObject jsonObject){
-        List<Comic> comics = new ArrayList<>();
+    public static Comic createComic(JsonObject jsonObject){
+        Comic comic = new Comic();
         try {
             JSONObject json = new JSONObject(jsonObject.toString());
 
@@ -47,7 +50,7 @@ public class ComicFactory {
 
             for (int i = 0; i < results.length(); i++) {
                 JSONObject comicJson = results.getJSONObject(i);
-                Comic comic = new Comic();
+
                 comic.setName(comicJson.getString("title"));
                 comic.setId(comicJson.getInt("id"));
                 comic.setIsbn(comicJson.getString("isbn"));
@@ -64,12 +67,12 @@ public class ComicFactory {
 
                 comic.setCharacters(formatCharacters(comicJson.getJSONObject("characters").getJSONArray("items")));
                 comic.setStories(formatStories(comicJson.getJSONObject("stories").getJSONArray("items")));
-                comics.add(comic);
+                return comic;
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return comics;
+        return comic;
     }
 
     private static List<Hero> formatCharacters(JSONArray charactersArray) throws JSONException{
