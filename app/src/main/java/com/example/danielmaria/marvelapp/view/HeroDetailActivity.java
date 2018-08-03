@@ -15,6 +15,7 @@ import com.example.danielmaria.marvelapp.R;
 import com.example.danielmaria.marvelapp.adapter.HeroComicsAdapter;
 import com.example.danielmaria.marvelapp.adapter.SquareTitleAdapter;
 import com.example.danielmaria.marvelapp.model.Comic;
+import com.example.danielmaria.marvelapp.model.Event;
 import com.example.danielmaria.marvelapp.model.Hero;
 import com.example.danielmaria.marvelapp.model.Series;
 import com.example.danielmaria.marvelapp.model.Stories;
@@ -38,6 +39,8 @@ public class HeroDetailActivity extends AppCompatActivity {
     private SquareTitleAdapter heroSeriesAdapter;
     private RecyclerView heroStoriesRecycler;
     private SquareTitleAdapter heroStoriesAdapter;
+    private RecyclerView heroEventsRecycler;
+    private SquareTitleAdapter heroEventsAdapter;
 
 
     @Override
@@ -57,6 +60,7 @@ public class HeroDetailActivity extends AppCompatActivity {
         heroComicsRecycler = findViewById(R.id.hero_comics_recycler);
         heroSeriesRecycler = findViewById(R.id.hero_series_recycler);
         heroStoriesRecycler = findViewById(R.id.hero_stories_recycler);
+        heroEventsRecycler = findViewById(R.id.hero_events_recycler);
         errorMessage = findViewById(R.id.error_message);
         heroDescription = findViewById(R.id.hero_description);
         nameHero = findViewById(R.id.name_hero);
@@ -74,6 +78,7 @@ public class HeroDetailActivity extends AppCompatActivity {
                 setHeroSeriesAdapter();
                 setHeroStoriesAdapter();
                 setImageHero();
+                setHeroEventsAdapter();
             }
 
             @Override
@@ -94,9 +99,13 @@ public class HeroDetailActivity extends AppCompatActivity {
         for (Comic comic: hero.getComics()) {
             nomes.add(comic.getName());
         }
-        heroSeriesAdapter = new SquareTitleAdapter(this, nomes);
-        heroSeriesRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        heroSeriesRecycler.setAdapter(heroSeriesAdapter);
+        if(nomes.size() > 0){
+            heroSeriesAdapter = new SquareTitleAdapter(this, nomes);
+            heroSeriesRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            heroSeriesRecycler.setAdapter(heroSeriesAdapter);
+        } else {
+            findViewById(R.id.hero_comics_title).setVisibility(View.GONE);
+        }
     }
 
     private void setHeroSeriesAdapter() {
@@ -104,9 +113,13 @@ public class HeroDetailActivity extends AppCompatActivity {
         for (Series serie: hero.getSeries()) {
             nomes.add(serie.getName());
         }
+        if(nomes.size() > 0){
         heroComicsAdapter = new SquareTitleAdapter(this, nomes);
         heroComicsRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         heroComicsRecycler.setAdapter(heroComicsAdapter);
+        } else {
+            findViewById(R.id.hero_series_title).setVisibility(View.GONE);
+        }
     }
 
     private void setHeroStoriesAdapter() {
@@ -114,9 +127,27 @@ public class HeroDetailActivity extends AppCompatActivity {
         for (Stories story: hero.getStories()) {
             nomes.add(story.getName());
         }
-        heroStoriesAdapter = new SquareTitleAdapter(this, nomes);
-        heroStoriesRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        heroStoriesRecycler.setAdapter(heroStoriesAdapter);
+        if(nomes.size() > 0){
+            heroStoriesAdapter = new SquareTitleAdapter(this, nomes);
+            heroStoriesRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            heroStoriesRecycler.setAdapter(heroStoriesAdapter);
+        } else {
+            findViewById(R.id.hero_stories_title).setVisibility(View.GONE);
+        }
+    }
+    private void setHeroEventsAdapter() {
+        List<String> nomes = new ArrayList<>();
+        for (Event event: hero.getEvents()) {
+            nomes.add(event.getName());
+        }
+        if(nomes.size() > 0){
+            heroEventsAdapter = new SquareTitleAdapter(this, nomes);
+            heroEventsRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            heroEventsRecycler.setAdapter(heroEventsAdapter);
+        } else {
+            findViewById(R.id.hero_events_title).setVisibility(View.GONE);
+        }
+
     }
 
 }
