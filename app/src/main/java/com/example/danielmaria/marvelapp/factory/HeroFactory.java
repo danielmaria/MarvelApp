@@ -5,7 +5,6 @@ import com.example.danielmaria.marvelapp.model.Event;
 import com.example.danielmaria.marvelapp.model.Hero;
 import com.example.danielmaria.marvelapp.model.Series;
 import com.example.danielmaria.marvelapp.model.Stories;
-import com.example.danielmaria.marvelapp.model.Url;
 import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
@@ -62,7 +61,6 @@ public class HeroFactory {
                 hero.setSeries(formatSeries(characterJson.getJSONObject("series").getJSONArray("items")));
                 hero.setStories(formatStories(characterJson.getJSONObject("stories").getJSONArray(("items"))));
                 hero.setEvents(formatEvents(characterJson.getJSONObject("events").getJSONArray("items")));
-                hero.setUrls(formatUrls(characterJson.getJSONArray("urls")));
 
             }
         } catch (JSONException e) {
@@ -72,23 +70,11 @@ public class HeroFactory {
         return hero;
     }
 
-    private static List<Url> formatUrls(JSONArray urls) throws JSONException {
-        List<Url> urlList = new ArrayList<>();
-        for (int i = 0; i < urls.length(); i++){
-            Url url = new Url();
-            url.setType(urls.getJSONObject(i).getString("type"));
-            url.setUrl(urls.getJSONObject(i).getString("url"));
-            urlList.add(url);
-        }
-        return urlList;
-    }
-
     private static List<Event> formatEvents(JSONArray events) throws JSONException {
         List<Event> eventsList = new ArrayList<>();
         for (int i = 0; i < events.length(); i++){
             Event event = new Event();
             event.setName(events.getJSONObject(i).getString("name"));
-            event.setResourceURI(events.getJSONObject(i).getString("resourceURI"));
             eventsList.add(event);
         }
         return eventsList;
@@ -111,7 +97,6 @@ public class HeroFactory {
         for (int i = 0; i < jsonArray.length(); i++){
             Series serie = new Series();
             serie.setName(jsonArray.getJSONObject(i).getString("name"));
-            serie.setResourceURI(jsonArray.getJSONObject(i).getString("resourceURI"));
             seriesList.add(serie);
         }
         return seriesList;
@@ -121,7 +106,6 @@ public class HeroFactory {
         List<Comic> comicsHero = new ArrayList<>();
         for (int i = 0; i < comics.length(); i++) {
                 Comic comic = new Comic();
-                comic.setResourceURI(comics.getJSONObject(i).getString("resourceURI"));
                 comic.setName(comics.getJSONObject(i).getString("name"));
                 comicsHero.add(comic);
             }

@@ -114,9 +114,9 @@ public class HeroDetailActivity extends AppCompatActivity {
             nomes.add(serie.getName());
         }
         if(nomes.size() > 0){
-        heroComicsAdapter = new SquareTitleAdapter(this, nomes);
-        heroComicsRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        heroComicsRecycler.setAdapter(heroComicsAdapter);
+            heroComicsAdapter = new SquareTitleAdapter(this, nomes);
+            heroComicsRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            heroComicsRecycler.setAdapter(heroComicsAdapter);
         } else {
             findViewById(R.id.hero_series_title).setVisibility(View.GONE);
         }

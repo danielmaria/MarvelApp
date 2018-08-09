@@ -4,7 +4,6 @@ import com.example.danielmaria.marvelapp.model.Comic;
 import com.example.danielmaria.marvelapp.model.Hero;
 import com.example.danielmaria.marvelapp.model.Series;
 import com.example.danielmaria.marvelapp.model.Stories;
-import com.example.danielmaria.marvelapp.model.Url;
 import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
@@ -55,15 +54,13 @@ public class ComicFactory {
                 comic.setId(comicJson.getInt("id"));
                 comic.setIsbn(comicJson.getString("isbn"));
                 comic.setPageCount(comicJson.getInt("pageCount"));
-                comic.setResourceURI(comicJson.getString("resourceURI"));
+                comic.setDescription(comicJson.getString("description"));
 
                 JSONObject thumbNail = comicJson.getJSONObject("thumbnail");
                 comic.setThumbnail(thumbNail.getString("path") + "." + thumbNail.getString("extension"));
 
                 JSONObject series = comicJson.getJSONObject("series");
-                comic.setSeries(new Series(series.getString("name"), series.getString("resourceURI")));
-
-                comic.setUrls(formatUrls(comicJson.getJSONArray("urls")));
+                comic.setSeries(new Series(series.getString("name")));
 
                 comic.setCharacters(formatCharacters(comicJson.getJSONObject("characters").getJSONArray("items")));
                 comic.setStories(formatStories(comicJson.getJSONObject("stories").getJSONArray("items")));
@@ -82,18 +79,6 @@ public class ComicFactory {
             character.setName(charactersArray.getJSONObject(i).getString("name"));
         }
         return characters;
-    }
-
-
-    private static List<Url> formatUrls(JSONArray urls) throws JSONException {
-        List<Url> urlList = new ArrayList<>();
-        for (int i = 0; i < urls.length(); i++) {
-            Url url = new Url();
-            url.setType(urls.getJSONObject(i).getString("type"));
-            url.setUrl(urls.getJSONObject(i).getString("url"));
-            urlList.add(url);
-        }
-        return urlList;
     }
 
     private static List<Stories> formatStories(JSONArray stories) throws JSONException {

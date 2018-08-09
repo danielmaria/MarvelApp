@@ -4,15 +4,12 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Comic implements Serializable {
-    private String resourceURI;
     private String name;
     private int id;
     private String isbn;
-    private String variantDescription;
     private String description;
     private int pageCount;
     private String thumbnail;
-    private List<Url> urls;
     private List<Stories> stories;
     private Series series;
     private List<Hero> characters;
@@ -24,14 +21,6 @@ public class Comic implements Serializable {
     public Comic(String name, String isbn) {
         this.name = name;
         this.isbn = isbn;
-    }
-
-    public String getResourceURI() {
-        return resourceURI;
-    }
-
-    public void setResourceURI(String resourceURI) {
-        this.resourceURI = resourceURI;
     }
 
     public String getName() {
@@ -58,14 +47,6 @@ public class Comic implements Serializable {
         this.isbn = isbn;
     }
 
-    public String getVariantDescription() {
-        return variantDescription;
-    }
-
-    public void setVariantDescription(String variantDescription) {
-        this.variantDescription = variantDescription;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -88,14 +69,6 @@ public class Comic implements Serializable {
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
-    }
-
-    public List<Url> getUrls() {
-        return urls;
-    }
-
-    public void setUrls(List<Url> urls) {
-        this.urls = urls;
     }
 
     public List<Stories> getStories() {

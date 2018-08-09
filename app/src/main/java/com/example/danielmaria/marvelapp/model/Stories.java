@@ -9,10 +9,6 @@ public class Stories {
 
     }
 
-    public String getResourceURI() {
-        return resourceURI;
-    }
-
     public void setResourceURI(String resourceURI) {
         this.resourceURI = resourceURI;
     }

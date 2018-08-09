@@ -13,9 +13,6 @@ public class Hero implements Serializable {
     private List<Series> series;
     private List<Stories> stories;
     private List<Event> events;
-    private List<Url> urls;
-    //private List<Creator> creators;
-
 
     public Hero(){
     }
@@ -89,11 +86,4 @@ public class Hero implements Serializable {
         this.events = events;
     }
 
-    public List<Url> getUrls() {
-        return urls;
-    }
-
-    public void setUrls(List<Url> urls) {
-        this.urls = urls;
-    }
 }

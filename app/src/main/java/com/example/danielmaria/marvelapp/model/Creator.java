@@ -1,17 +1,8 @@
 package com.example.danielmaria.marvelapp.model;
 
 class Creator {
-    private String resourceURI;
     private String name;
     private String role;
-
-    public String getResourceURI() {
-        return resourceURI;
-    }
-
-    public void setResourceURI(String resourceURI) {
-        this.resourceURI = resourceURI;
-    }
 
     public String getName() {
         return name;

@@ -21,6 +21,7 @@
             app:layout_constraintBottom_toTopOf="@+id/titulo_comic"
             />
 
+
         <TextView
             android:id="@+id/titulo_comic"
             android:layout_width="wrap_content"
@@ -40,18 +41,69 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginRight="20dp"/>
         <TextView
+            android:id="@+id/description_comic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@+id/comic_isbn_title"
+            />
+        <TextView
             android:id="@+id/title_page_count_fix"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Page count: "
-            app:layout_constraintTop_toBottomOf="@+id/comic_isbn_title"
+            app:layout_constraintTop_toBottomOf="@+id/description_comic"
             />
         <TextView
             android:id="@+id/title_page_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/comic_isbn_title"
+            app:layout_constraintTop_toBottomOf="@+id/description_comic"
             app:layout_constraintStart_toEndOf="@+id/title_page_count_fix"
+            />
+        <TextView
+            android:id="@+id/title_serie_fix"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Serie: "
+            app:layout_constraintTop_toBottomOf="@+id/title_page_count"
+            />
+        <TextView
+            android:id="@+id/title_serie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/title_page_count"
+            app:layout_constraintStart_toEndOf="@+id/title_serie_fix"
+            />
+        <TextView
+            android:id="@+id/title_stories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stories"
+            app:layout_constraintTop_toBottomOf="@+id/title_serie_fix"
+            />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/comic_stories_recycler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/title_stories"
+            />
+
+        <TextView
+            android:id="@+id/title_characters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Characters"
+            app:layout_constraintTop_toBottomOf="@+id/comic_stories_recycler"
+            />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/comic_characters_recycler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/title_characters"
             />
 
         <ProgressBar
@@ -62,6 +114,8 @@
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+
 
         <include
             android:visibility="gone"
