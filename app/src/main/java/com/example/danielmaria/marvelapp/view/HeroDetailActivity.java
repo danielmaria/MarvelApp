@@ -23,23 +23,28 @@ import com.example.danielmaria.marvelapp.service.HttpService;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+
 public class HeroDetailActivity extends AppCompatActivity {
 
     private HttpService httpService;
-    private ProgressBar progressBar;
-    private ImageView imgHero;
-    private SquareTitleAdapter heroComicsAdapter;
-    private RecyclerView heroComicsRecycler;
-    private TextView heroDescription;
-    private TextView nameHero;
     private Hero hero;
-    private ConstraintLayout errorMessage;
-    private RecyclerView heroSeriesRecycler;
+
+    @BindView(R.id.progress_bar) ProgressBar progressBar;
+    @BindView(R.id.img_hero) ImageView imgHero;
+    @BindView(R.id.hero_description) TextView heroDescription;
+    @BindView(R.id.name_hero) TextView nameHero;
+    @BindView(R.id.error_message) ConstraintLayout errorMessage;
+
+    @BindView(R.id.hero_series_recycler) RecyclerView heroSeriesRecycler;
     private SquareTitleAdapter heroSeriesAdapter;
-    private RecyclerView heroStoriesRecycler;
+    @BindView(R.id.hero_comics_recycler) RecyclerView heroComicsRecycler;
+    private SquareTitleAdapter heroComicsAdapter;
+    @BindView(R.id.hero_stories_recycler) RecyclerView heroStoriesRecycler;
     private SquareTitleAdapter heroStoriesAdapter;
-    private RecyclerView heroEventsRecycler;
+    @BindView(R.id.hero_events_recycler) RecyclerView heroEventsRecycler;
     private SquareTitleAdapter heroEventsAdapter;
+
 
 
     @Override
@@ -47,38 +52,22 @@ public class HeroDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hero_detail);
 
-        hero = (Hero) getIntent().getSerializableExtra("hero");
-
-        httpService = new HttpService();
+        this.httpService = new HttpService();
+        this.hero = (Hero) getIntent().getSerializableExtra("hero");
 
         if(getActionBar() != null){
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        progressBar = findViewById(R.id.progress_bar);
-        heroComicsRecycler = findViewById(R.id.hero_comics_recycler);
-        heroSeriesRecycler = findViewById(R.id.hero_series_recycler);
-        heroStoriesRecycler = findViewById(R.id.hero_stories_recycler);
-        heroEventsRecycler = findViewById(R.id.hero_events_recycler);
-        errorMessage = findViewById(R.id.error_message);
-        heroDescription = findViewById(R.id.hero_description);
-        nameHero = findViewById(R.id.name_hero);
-        imgHero = findViewById(R.id.img_hero);
-
         httpService.getHeroById(hero.getId(), new HttpService.GetCharacterByIdListener() {
             @Override
             public void sucess(Hero heroRequest) {
-                progressBar.setVisibility(View.GONE);
                 hero = heroRequest;
+                progressBar.setVisibility(View.GONE);
 
-                heroDescription.setText(hero.getDescription());
-                nameHero.setText(hero.getName());
-
-                setHeroComicAdapter();
-                setHeroSeriesAdapter();
-                setHeroStoriesAdapter();
+                setFixedInfos();
                 setImageHero();
-                setHeroEventsAdapter();
+                setAdapters();
             }
 
             @Override
@@ -89,8 +78,20 @@ public class HeroDetailActivity extends AppCompatActivity {
         });
     }
 
+    private void setFixedInfos() {
+        heroDescription.setText(hero.getDescription());
+        nameHero.setText(hero.getName());
+    }
+
+    private void setAdapters() {
+        setHeroComicAdapter();
+        setHeroSeriesAdapter();
+        setHeroStoriesAdapter();
+        setHeroEventsAdapter();
+    }
+
     private void setImageHero() {
-        imgHero.setContentDescription("Imagem do " + hero.getName());
+        imgHero.setContentDescription("Image of " + hero.getName());
         Glide.with(this).load(hero.getThumbnail()).into(imgHero);
     }
 

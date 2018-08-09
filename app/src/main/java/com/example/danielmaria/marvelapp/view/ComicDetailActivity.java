@@ -22,56 +22,46 @@ import com.example.danielmaria.marvelapp.service.HttpService;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ComicDetailActivity extends AppCompatActivity {
-    private TextView tituloComic;
-    private TextView descriptionComic;
-    private TextView comicIsbnTitle;
-    private TextView titlePageCount;
-    private TextView titleSerie;
-    private Comic comic;
-    private HttpService httpService;
-    private ConstraintLayout errorMessage;
-    private ProgressBar progressBar;
-    private ImageView imgComic;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-    private RecyclerView comicStoriesRecycler;
+public class ComicDetailActivity extends AppCompatActivity {
+    private HttpService httpService;
+    private Comic comic;
+
+    @BindView(R.id.titulo_comic) TextView tituloComic;
+    @BindView(R.id.progress_bar) ProgressBar progressBar;
+    @BindView(R.id.error_message) ConstraintLayout errorMessage;
+    @BindView(R.id.description_comic) TextView descriptionComic;
+    @BindView(R.id.comic_isbn_title) TextView comicIsbnTitle;
+    @BindView(R.id.title_page_count) TextView titlePageCount;
+    @BindView(R.id.title_serie) TextView titleSerie;
+    @BindView(R.id.img_comic) ImageView imgComic;
+
+    @BindView(R.id.comic_stories_recycler) RecyclerView comicStoriesRecycler;
     private SquareTitleAdapter storiesAdapter;
-    private RecyclerView comicCharactersRecycler;
+    @BindView(R.id.comic_characters_recycler) RecyclerView comicCharactersRecycler;
     private SquareTitleAdapter charactersAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comic_detail);
-        progressBar = findViewById(R.id.progress_bar);
-        errorMessage = findViewById(R.id.error_message);
-        tituloComic = findViewById(R.id.titulo_comic);
-        descriptionComic = findViewById(R.id.description_comic);
-        comicIsbnTitle = findViewById(R.id.comic_isbn_title);
-        titlePageCount = findViewById(R.id.title_page_count);
-        imgComic = findViewById(R.id.img_comic);
-        titleSerie = findViewById(R.id.title_serie);
-
-        comicStoriesRecycler = findViewById(R.id.comic_stories_recycler);
-        comicCharactersRecycler = findViewById(R.id.comic_characters_recycler);
+        ButterKnife.bind(this);
 
         this.comic = (Comic) getIntent().getSerializableExtra("comic");
-        httpService = new HttpService();
+        this.httpService = new HttpService();
 
         httpService.getComicById(this.comic.getId(), new HttpService.GetComicrByIdListener(){
             @Override
             public void sucess(Comic comicRequest) {
-                progressBar.setVisibility(View.GONE);
                 comic = comicRequest;
-                tituloComic.setText(comic.getName());
-                descriptionComic.setText(comic.getDescription());
-                comicIsbnTitle.setText(!comic.getIsbn().isEmpty() ? "ISBN: " + comic.getIsbn() : "");
-                titlePageCount.setText(String.valueOf(comic.getPageCount()));
-                titleSerie.setText(comic.getSeries().getName());
+                progressBar.setVisibility(View.GONE);
 
-                setStoriesAdapter();
-                setCharactersAdapter();
+                setFixedInfos();
+                setISBN();
                 setImageComic();
+                setAdapters();
             }
             @Override
             public void fail() {
@@ -80,6 +70,26 @@ public class ComicDetailActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void setFixedInfos() {
+        tituloComic.setText(comic.getName());
+        descriptionComic.setText(comic.getDescription());
+        titlePageCount.setText(String.valueOf(comic.getPageCount()));
+        titleSerie.setText(comic.getSeries().getName());
+    }
+
+    private void setAdapters() {
+        setStoriesAdapter();
+        setCharactersAdapter();
+    }
+
+    private void setISBN() {
+        if(this.comic.getIsbn().isEmpty()){
+            comicIsbnTitle.setVisibility(View.GONE);
+        } else {
+            this.comicIsbnTitle.setText("ISBN: " + comic.getIsbn());
+        }
     }
 
     private void setCharactersAdapter() {
@@ -113,7 +123,7 @@ public class ComicDetailActivity extends AppCompatActivity {
     }
 
     private void setImageComic() {
-        imgComic.setContentDescription("Imagem do " + comic.getName());
+        imgComic.setContentDescription("Image of " + comic.getName());
         Glide.with(this).load(comic.getThumbnail()).into(imgComic);
     }
 }
