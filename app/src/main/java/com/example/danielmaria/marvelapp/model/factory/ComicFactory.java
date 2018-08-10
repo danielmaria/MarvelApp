@@ -1,4 +1,4 @@
-package com.example.danielmaria.marvelapp.factory;
+package com.example.danielmaria.marvelapp.model.factory;
 
 import com.example.danielmaria.marvelapp.model.Comic;
 import com.example.danielmaria.marvelapp.model.Hero;

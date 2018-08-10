@@ -1,4 +1,4 @@
-package com.example.danielmaria.marvelapp.adapter;
+package com.example.danielmaria.marvelapp.view.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

@@ -1,4 +1,4 @@
-package com.example.danielmaria.marvelapp.adapter;
+package com.example.danielmaria.marvelapp.view.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.danielmaria.marvelapp.R;
-import com.example.danielmaria.marvelapp.model.Series;
 
 import java.util.List;
 

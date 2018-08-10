@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.example.danielmaria.marvelapp.R;
-import com.example.danielmaria.marvelapp.adapter.HeroesAdapter;
+import com.example.danielmaria.marvelapp.view.adapter.HeroesAdapter;
 import com.example.danielmaria.marvelapp.model.Hero;
 import com.example.danielmaria.marvelapp.service.HttpService;
 import com.example.danielmaria.marvelapp.view.HeroDetailActivity;

@@ -1,7 +1,6 @@
 package com.example.danielmaria.marvelapp.view.fragments;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,15 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.example.danielmaria.marvelapp.R;
-import com.example.danielmaria.marvelapp.adapter.ComicsAdapter;
+import com.example.danielmaria.marvelapp.view.adapter.ComicsAdapter;
 import com.example.danielmaria.marvelapp.model.Comic;
-import com.example.danielmaria.marvelapp.model.Hero;
 import com.example.danielmaria.marvelapp.service.HttpService;
 import com.example.danielmaria.marvelapp.view.ComicDetailActivity;
-import com.example.danielmaria.marvelapp.view.HeroDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;

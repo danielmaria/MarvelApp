@@ -10,19 +10,28 @@ import android.view.MenuItem;
 import android.widget.ProgressBar;
 
 import com.example.danielmaria.marvelapp.R;
+import com.example.danielmaria.marvelapp.interfaces.IMainActivity;
+import com.example.danielmaria.marvelapp.presenter.MainActivityPresenter;
 import com.example.danielmaria.marvelapp.view.fragments.ComicFragment;
 import com.example.danielmaria.marvelapp.view.fragments.HeroFragment;
 
-public class MainActivity extends AppCompatActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class MainActivity extends AppCompatActivity  implements IMainActivity.View {
+
+    @BindView(R.id.bottom_nav_view) BottomNavigationView bottomNavigationView;
+
+    /* Presenter */
+    private IMainActivity.Presenter presenter = new MainActivityPresenter(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_view);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener
+        this.bottomNavigationView.setOnNavigationItemSelectedListener
                 (new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -34,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.nav_comics:
                                 selectedFragment =  new ComicFragment();
                                 break;
-
                         }
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.fragment_container, selectedFragment);
@@ -46,10 +54,9 @@ public class MainActivity extends AppCompatActivity {
         goToHeroFragment();
     }
 
-    private void goToHeroFragment(){
+    @Override
+    public void goToHeroFragment() {
         Fragment heroFragment = new HeroFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, heroFragment).commit();
+        this.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, heroFragment).commit();
     }
-
-
 }

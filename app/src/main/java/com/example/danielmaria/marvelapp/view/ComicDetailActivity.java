@@ -12,10 +12,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.danielmaria.marvelapp.R;
-import com.example.danielmaria.marvelapp.adapter.SquareTitleAdapter;
+import com.example.danielmaria.marvelapp.view.adapter.SquareTitleAdapter;
 import com.example.danielmaria.marvelapp.model.Comic;
 import com.example.danielmaria.marvelapp.model.Hero;
-import com.example.danielmaria.marvelapp.model.Series;
 import com.example.danielmaria.marvelapp.model.Stories;
 import com.example.danielmaria.marvelapp.service.HttpService;
 

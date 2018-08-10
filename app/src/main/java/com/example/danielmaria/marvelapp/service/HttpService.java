@@ -11,10 +11,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.example.danielmaria.marvelapp.factory.ComicFactory.createComic;
-import static com.example.danielmaria.marvelapp.factory.HeroFactory.createSimpleHero;
-import static com.example.danielmaria.marvelapp.factory.HeroFactory.createHero;
-import static com.example.danielmaria.marvelapp.factory.ComicFactory.createSimpleComics;
+import static com.example.danielmaria.marvelapp.model.factory.ComicFactory.createComic;
+import static com.example.danielmaria.marvelapp.model.factory.HeroFactory.createSimpleHero;
+import static com.example.danielmaria.marvelapp.model.factory.HeroFactory.createHero;
+import static com.example.danielmaria.marvelapp.model.factory.ComicFactory.createSimpleComics;
 
 public class HttpService {
     private HttpInterface api = HttpInterface.retrofit.create(HttpInterface.class);

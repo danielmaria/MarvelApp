@@ -1,4 +1,4 @@
-package com.example.danielmaria.marvelapp.adapter;
+package com.example.danielmaria.marvelapp.view.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide;
 import com.example.danielmaria.marvelapp.R;
 import com.example.danielmaria.marvelapp.model.Hero;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HeroesAdapter extends RecyclerView.Adapter {

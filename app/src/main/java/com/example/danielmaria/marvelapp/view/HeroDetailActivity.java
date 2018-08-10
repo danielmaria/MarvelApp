@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.danielmaria.marvelapp.R;
-import com.example.danielmaria.marvelapp.adapter.SquareTitleAdapter;
+import com.example.danielmaria.marvelapp.interfaces.IHeroDetailActivity;
+import com.example.danielmaria.marvelapp.presenter.HeroDetailActivityPresenter;
+import com.example.danielmaria.marvelapp.view.adapter.SquareTitleAdapter;
 import com.example.danielmaria.marvelapp.model.Comic;
 import com.example.danielmaria.marvelapp.model.Event;
 import com.example.danielmaria.marvelapp.model.Hero;
@@ -24,11 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class HeroDetailActivity extends AppCompatActivity {
+public class HeroDetailActivity extends AppCompatActivity implements IHeroDetailActivity.View{
 
-    private HttpService httpService;
-    private Hero hero;
+    private IHeroDetailActivity.Presenter presenter = new HeroDetailActivityPresenter(this);
 
     @BindView(R.id.progress_bar) ProgressBar progressBar;
     @BindView(R.id.img_hero) ImageView imgHero;
@@ -45,59 +47,54 @@ public class HeroDetailActivity extends AppCompatActivity {
     @BindView(R.id.hero_events_recycler) RecyclerView heroEventsRecycler;
     private SquareTitleAdapter heroEventsAdapter;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hero_detail);
+        ButterKnife.bind(this);
 
-        this.httpService = new HttpService();
-        this.hero = (Hero) getIntent().getSerializableExtra("hero");
+        Hero heroSelected = (Hero) getIntent().getSerializableExtra("hero");
 
         if(getActionBar() != null){
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        httpService.getHeroById(hero.getId(), new HttpService.GetCharacterByIdListener() {
-            @Override
-            public void sucess(Hero heroRequest) {
-                hero = heroRequest;
-                progressBar.setVisibility(View.GONE);
-
-                setFixedInfos();
-                setImageHero();
-                setAdapters();
-            }
-
-            @Override
-            public void fail() {
-                errorMessage.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
-            }
-        });
+        this.presenter.getCharacter(heroSelected.getId());
     }
 
-    private void setFixedInfos() {
+    @Override
+    public void hideErrorMessage(){
+        errorMessage.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setFixedInfos(Hero hero) {
         heroDescription.setText(hero.getDescription());
         nameHero.setText(hero.getName());
+        setImageHero(hero.getName(), hero.getThumbnail());
     }
 
-    private void setAdapters() {
-        setHeroComicAdapter();
-        setHeroSeriesAdapter();
-        setHeroStoriesAdapter();
-        setHeroEventsAdapter();
+    @Override
+    public void setAdapters(Hero hero) {
+        setHeroComicAdapter(hero.getComics());
+        setHeroSeriesAdapter(hero.getSeries());
+        setHeroStoriesAdapter(hero.getStories());
+        setHeroEventsAdapter(hero.getEvents());
     }
 
-    private void setImageHero() {
-        imgHero.setContentDescription("Image of " + hero.getName());
-        Glide.with(this).load(hero.getThumbnail()).into(imgHero);
+    private void setImageHero(String name, String thumbnail) {
+        imgHero.setContentDescription("Image of " + name);
+        Glide.with(this).load(thumbnail).into(imgHero);
     }
 
-    private void setHeroComicAdapter() {
+    private void setHeroComicAdapter(List<Comic> comics) {
         List<String> nomes = new ArrayList<>();
-        for (Comic comic: hero.getComics()) {
+        for (Comic comic: comics) {
             nomes.add(comic.getName());
         }
         if(nomes.size() > 0){
@@ -109,9 +106,9 @@ public class HeroDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void setHeroSeriesAdapter() {
+    private void setHeroSeriesAdapter(List<Series> series) {
         List<String> nomes = new ArrayList<>();
-        for (Series serie: hero.getSeries()) {
+        for (Series serie: series) {
             nomes.add(serie.getName());
         }
         if(nomes.size() > 0){
@@ -123,9 +120,9 @@ public class HeroDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void setHeroStoriesAdapter() {
+    private void setHeroStoriesAdapter(List<Stories> stories) {
         List<String> nomes = new ArrayList<>();
-        for (Stories story: hero.getStories()) {
+        for (Stories story: stories) {
             nomes.add(story.getName());
         }
         if(nomes.size() > 0){
@@ -136,9 +133,9 @@ public class HeroDetailActivity extends AppCompatActivity {
             findViewById(R.id.hero_stories_title).setVisibility(View.GONE);
         }
     }
-    private void setHeroEventsAdapter() {
+    private void setHeroEventsAdapter(List<Event> eventos) {
         List<String> nomes = new ArrayList<>();
-        for (Event event: hero.getEvents()) {
+        for (Event event: eventos) {
             nomes.add(event.getName());
         }
         if(nomes.size() > 0){
