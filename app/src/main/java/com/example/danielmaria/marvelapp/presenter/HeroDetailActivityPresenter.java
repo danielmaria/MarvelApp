@@ -11,7 +11,6 @@ import com.example.danielmaria.marvelapp.view.MainActivity;
 
 public class HeroDetailActivityPresenter implements IHeroDetailActivity.Presenter {
     private HttpService httpService;
-    private Hero hero;
 
     private HeroDetailActivity view;
 
@@ -21,10 +20,11 @@ public class HeroDetailActivityPresenter implements IHeroDetailActivity.Presente
 
     @Override
     public void getCharacter(int idHero) {
+        this.httpService = new HttpService();
         this.httpService.getHeroById(idHero, new HttpService.GetCharacterByIdListener() {
             @Override
             public void sucess(Hero heroRequest) {
-                hero = heroRequest;
+                Hero hero = heroRequest;
                 view.hideProgressBar();
                 view.setFixedInfos(hero);
                 view.setAdapters(hero);

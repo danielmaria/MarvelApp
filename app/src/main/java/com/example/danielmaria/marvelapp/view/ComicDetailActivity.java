@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.danielmaria.marvelapp.R;
+import com.example.danielmaria.marvelapp.interfaces.IComicDetailActivity;
+import com.example.danielmaria.marvelapp.presenter.ComicDetailActivityPresenter;
 import com.example.danielmaria.marvelapp.view.adapter.SquareTitleAdapter;
 import com.example.danielmaria.marvelapp.model.Comic;
 import com.example.danielmaria.marvelapp.model.Hero;
@@ -24,9 +26,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ComicDetailActivity extends AppCompatActivity {
-    private HttpService httpService;
-    private Comic comic;
+public class ComicDetailActivity extends AppCompatActivity implements IComicDetailActivity.View{
+    private IComicDetailActivity.Presenter presenter = new ComicDetailActivityPresenter(this);
 
     @BindView(R.id.titulo_comic) TextView tituloComic;
     @BindView(R.id.progress_bar) ProgressBar progressBar;
@@ -48,52 +49,50 @@ public class ComicDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_comic_detail);
         ButterKnife.bind(this);
 
-        this.comic = (Comic) getIntent().getSerializableExtra("comic");
-        this.httpService = new HttpService();
+        Comic comicSelected = (Comic) getIntent().getSerializableExtra("comic");
 
-        httpService.getComicById(this.comic.getId(), new HttpService.GetComicrByIdListener(){
-            @Override
-            public void sucess(Comic comicRequest) {
-                comic = comicRequest;
-                progressBar.setVisibility(View.GONE);
-
-                setFixedInfos();
-                setISBN();
-                setImageComic();
-                setAdapters();
-            }
-            @Override
-            public void fail() {
-                errorMessage.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
-            }
-        });
-
+        presenter.getComics(comicSelected.getId());
     }
 
-    private void setFixedInfos() {
+
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideErrorMessage() {
+        errorMessage.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setFixedInfos(Comic comic) {
         tituloComic.setText(comic.getName());
         descriptionComic.setText(comic.getDescription());
         titlePageCount.setText(String.valueOf(comic.getPageCount()));
         titleSerie.setText(comic.getSeries().getName());
+        setISBN(comic.getIsbn());
+        setImageComic(comic.getName(), comic.getThumbnail());
     }
 
-    private void setAdapters() {
-        setStoriesAdapter();
-        setCharactersAdapter();
+    @Override
+    public void setAdapters(Comic comic) {
+        setStoriesAdapter(comic.getStories());
+        setCharactersAdapter(comic.getCharacters());
     }
 
-    private void setISBN() {
-        if(this.comic.getIsbn().isEmpty()){
+    private void setISBN(String isbn) {
+        if(isbn.isEmpty()){
             comicIsbnTitle.setVisibility(View.GONE);
         } else {
-            this.comicIsbnTitle.setText("ISBN: " + comic.getIsbn());
+            this.comicIsbnTitle.setText("ISBN: " + isbn);
         }
     }
 
-    private void setCharactersAdapter() {
+    private void setCharactersAdapter(List<Hero> characters) {
         List<String> namesCharacters = new ArrayList<>();
-        for(Hero character : comic.getCharacters()){
+        for(Hero character : characters){
             namesCharacters.add(character.getName());
         }
         if(namesCharacters.size() > 0){
@@ -106,9 +105,9 @@ public class ComicDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void setStoriesAdapter() {
+    private void setStoriesAdapter(List<Stories> stories) {
         List<String> nomesStories = new ArrayList<>();
-        for(Stories storie : comic.getStories()){
+        for(Stories storie : stories){
             nomesStories.add(storie.getName());
         }
         if(nomesStories.size() > 0){
@@ -121,8 +120,8 @@ public class ComicDetailActivity extends AppCompatActivity {
 
     }
 
-    private void setImageComic() {
-        imgComic.setContentDescription("Image of " + comic.getName());
-        Glide.with(this).load(comic.getThumbnail()).into(imgComic);
+    private void setImageComic(String comicName, String comicThumbnail) {
+        imgComic.setContentDescription("Image of " + comicName);
+        Glide.with(this).load(comicThumbnail).into(imgComic);
     }
 }
