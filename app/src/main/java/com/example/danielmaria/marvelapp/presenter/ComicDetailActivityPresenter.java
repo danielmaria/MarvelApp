@@ -1,12 +1,9 @@
 package com.example.danielmaria.marvelapp.presenter;
 
 import com.example.danielmaria.marvelapp.interfaces.IComicDetailActivity;
-import com.example.danielmaria.marvelapp.interfaces.IHeroDetailActivity;
 import com.example.danielmaria.marvelapp.model.Comic;
-import com.example.danielmaria.marvelapp.model.Hero;
 import com.example.danielmaria.marvelapp.service.HttpService;
 import com.example.danielmaria.marvelapp.view.ComicDetailActivity;
-import com.example.danielmaria.marvelapp.view.HeroDetailActivity;
 
 public class ComicDetailActivityPresenter implements IComicDetailActivity.Presenter {
     private HttpService httpService;
@@ -31,7 +28,7 @@ public class ComicDetailActivityPresenter implements IComicDetailActivity.Presen
             }
             @Override
             public void fail() {
-                view.hideErrorMessage();
+                view.showErrorMessage();
                 view.hideProgressBar();
             }
         });

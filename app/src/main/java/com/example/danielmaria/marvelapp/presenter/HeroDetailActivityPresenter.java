@@ -1,13 +1,9 @@
 package com.example.danielmaria.marvelapp.presenter;
 
-import android.view.View;
-
 import com.example.danielmaria.marvelapp.interfaces.IHeroDetailActivity;
-import com.example.danielmaria.marvelapp.interfaces.IMainActivity;
 import com.example.danielmaria.marvelapp.model.Hero;
 import com.example.danielmaria.marvelapp.service.HttpService;
 import com.example.danielmaria.marvelapp.view.HeroDetailActivity;
-import com.example.danielmaria.marvelapp.view.MainActivity;
 
 public class HeroDetailActivityPresenter implements IHeroDetailActivity.Presenter {
     private HttpService httpService;

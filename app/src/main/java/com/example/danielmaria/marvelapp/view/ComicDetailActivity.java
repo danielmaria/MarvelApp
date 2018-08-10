@@ -18,7 +18,6 @@ import com.example.danielmaria.marvelapp.view.adapter.SquareTitleAdapter;
 import com.example.danielmaria.marvelapp.model.Comic;
 import com.example.danielmaria.marvelapp.model.Hero;
 import com.example.danielmaria.marvelapp.model.Stories;
-import com.example.danielmaria.marvelapp.service.HttpService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +61,7 @@ public class ComicDetailActivity extends AppCompatActivity implements IComicDeta
     }
 
     @Override
-    public void hideErrorMessage() {
+    public void showErrorMessage() {
         errorMessage.setVisibility(View.VISIBLE);
     }
 
@@ -121,7 +120,7 @@ public class ComicDetailActivity extends AppCompatActivity implements IComicDeta
     }
 
     private void setImageComic(String comicName, String comicThumbnail) {
-        imgComic.setContentDescription("Image of " + comicName);
+        this.imgComic.setContentDescription("Image of " + comicName);
         Glide.with(this).load(comicThumbnail).into(imgComic);
     }
 }

@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.example.danielmaria.marvelapp.R;
+import com.example.danielmaria.marvelapp.interfaces.fragments.IComicFragment;
+import com.example.danielmaria.marvelapp.presenter.fragments.ComicFragmentPresenter;
 import com.example.danielmaria.marvelapp.view.adapter.ComicsAdapter;
 import com.example.danielmaria.marvelapp.model.Comic;
 import com.example.danielmaria.marvelapp.service.HttpService;
@@ -22,13 +24,18 @@ import com.example.danielmaria.marvelapp.view.ComicDetailActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ComicFragment extends Fragment {
-    private List<Comic> comics = new ArrayList<>();
-    private RecyclerView comicsRecycler;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class ComicFragment extends Fragment implements IComicFragment.View{
+
+    private IComicFragment.Presenter presenter = new ComicFragmentPresenter(this);
     private ComicsAdapter comicsAdapter;
-    private HttpService httpService;
-    private ProgressBar progressBar;
-    private ConstraintLayout errorMessage;
+
+
+    @BindView(R.id.comic_reycler) private RecyclerView comicsRecycler;
+    @BindView(R.id.progress_bar) private ProgressBar progressBar;
+    @BindView(R.id.error_message) private ConstraintLayout errorMessage;
 
     @Nullable
     @Override
@@ -39,31 +46,25 @@ public class ComicFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        httpService = new HttpService();
-
-        comicsRecycler = view.findViewById(R.id.comic_reycler);
-        progressBar = view.findViewById(R.id.progress_bar);
-        errorMessage = view.findViewById(R.id.error_message);
-
-        httpService.getComics(new HttpService.GetComicListener() {
-            @Override
-            public void sucess(List<Comic> comicsList) {
-                progressBar.setVisibility(View.GONE);
-                comics = comicsList;
-                setAdapter();
-            }
-
-            @Override
-            public void fail() {
-                errorMessage.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
-            }
-        });
-
+        ButterKnife.bind(view);
+        presenter.getComics();
     }
 
-    private void setAdapter() {
-        comicsAdapter = new ComicsAdapter(getContext(), comics, new ComicsAdapter.OnComicClicked() {
+
+
+    @Override
+    public void showErrorMessage() {
+        errorMessage.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setAdapter(List<Comic> comicsList) {
+        comicsAdapter = new ComicsAdapter(getContext(), comicsList, new ComicsAdapter.OnComicClicked() {
             @Override
             public void onClick(Comic comic) {
                 Intent intent = new Intent(getActivity(), ComicDetailActivity.class);

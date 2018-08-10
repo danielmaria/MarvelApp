@@ -14,58 +14,59 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.example.danielmaria.marvelapp.R;
-import com.example.danielmaria.marvelapp.view.adapter.HeroesAdapter;
+import com.example.danielmaria.marvelapp.interfaces.fragments.IHeroFragment;
 import com.example.danielmaria.marvelapp.model.Hero;
+import com.example.danielmaria.marvelapp.presenter.fragments.HeroFragmentPresenter;
 import com.example.danielmaria.marvelapp.service.HttpService;
 import com.example.danielmaria.marvelapp.view.HeroDetailActivity;
+import com.example.danielmaria.marvelapp.view.adapter.HeroesAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class HeroFragment extends Fragment {
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-    private RecyclerView herosRecycler;
+public class HeroFragment extends Fragment implements IHeroFragment.View {
+
+    private IHeroFragment.Presenter presenter = new HeroFragmentPresenter(this);
+
+    @BindView(R.id.hero_recycler) RecyclerView herosRecycler;
+    @BindView(R.id.progress_bar) ProgressBar progressBar;
+    @BindView(R.id.error_message) ConstraintLayout errorMessage;
+
     private HeroesAdapter heroesAdapter;
-    private List<Hero> heros = new ArrayList<>();
     private HttpService httpService;
-    private ProgressBar progressBar;
-    private ConstraintLayout errorMessage;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.hero_fragment, container, false);
+
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         httpService = new HttpService();
+        ButterKnife.bind(view);
 
-        herosRecycler = (RecyclerView) view.findViewById(R.id.hero_recycler);
-        progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
-        errorMessage = (ConstraintLayout) view.findViewById(R.id.error_message);
-
-        httpService.getCharacters(new HttpService.GetCharactersListener(){
-            @Override
-            public void success(List<Hero> characters) {
-                progressBar.setVisibility(View.GONE);
-                heros = characters;
-                setAdapter();
-            }
-
-            @Override
-            public void fail() {
-                errorMessage.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
-            }
-        });
+        presenter.getComics();
 
     }
 
-    private void setAdapter() {
-        heroesAdapter = new HeroesAdapter(getContext(), heros, new HeroesAdapter.OnHeroClicked() {
+    @Override
+    public void showErrorMessage() {
+        errorMessage.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setAdapter(List<Hero> heroes) {
+        heroesAdapter = new HeroesAdapter(getContext(), heroes, new HeroesAdapter.OnHeroClicked() {
             @Override
             public void onClick(Hero hero) {
                 Intent intent = new Intent(getActivity(), HeroDetailActivity.class);

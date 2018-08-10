@@ -14,9 +14,12 @@ import com.example.danielmaria.marvelapp.model.Hero;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class HeroesAdapter extends RecyclerView.Adapter {
 
-    private List<Hero> heros;
+    private List<Hero> heroes;
     private Context context;
 
     public interface OnHeroClicked{
@@ -27,7 +30,7 @@ public class HeroesAdapter extends RecyclerView.Adapter {
 
     public HeroesAdapter(Context context, List<Hero> heroes, OnHeroClicked onHeroClicked) {
         this.context = context;
-        this.heros = heroes;
+        this.heroes = this.heroes;
         this.onHeroClicked = onHeroClicked;
     }
 
@@ -35,14 +38,14 @@ public class HeroesAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.heroes_item, parent, false);
 
-        return new HerosViewHolder(view, onHeroClicked, heros);
+        return new HerosViewHolder(view, onHeroClicked, heroes);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         HerosViewHolder holder = (HerosViewHolder) viewHolder;
 
-        Hero hero = heros.get(position);
+        Hero hero = heroes.get(position);
 
         holder.heroName.setText(hero.getName());
         holder.heroId.setText(String.valueOf(hero.getId()));
@@ -51,32 +54,32 @@ public class HeroesAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return heros.size();
+        return heroes.size();
     }
 
     private void setImageHero(HerosViewHolder holder, Hero hero) {
-        holder.backgroundHero.setContentDescription("Imagem do " + hero.getName());
+        holder.backgroundHero.setContentDescription("Image of " + hero.getName());
         Glide.with(this.context).load(hero.getThumbnail()).into(holder.backgroundHero);
     }
 }
 
 class HerosViewHolder extends RecyclerView.ViewHolder{
 
-    TextView heroName;
-    TextView heroId;
-    ImageView backgroundHero;
+    @BindView(R.id.heroe_name) TextView heroName;
+    @BindView(R.id.hero_id) TextView heroId;
+    @BindView(R.id.background_hero) ImageView backgroundHero;
 
-    public HerosViewHolder(View itemView, final HeroesAdapter.OnHeroClicked onHeroClicked, final List<Hero> heros) {
+    public HerosViewHolder(View itemView, final HeroesAdapter.OnHeroClicked onHeroClicked, final List<Hero> heroes) {
         super(itemView);
-
-        this.heroName = itemView.findViewById(R.id.heroe_name);
-        this.heroId = itemView.findViewById(R.id.hero_id);
-        this.backgroundHero = itemView.findViewById(R.id.background_hero);
+        ButterKnife.bind(itemView);
+//        this.heroName = itemView.findViewById(R.id.heroe_name);
+//        this.heroId = itemView.findViewById(R.id.hero_id);
+//        this.backgroundHero = itemView.findViewById(R.id.background_hero);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onHeroClicked.onClick(heros.get(getAdapterPosition()));
+                onHeroClicked.onClick(heroes.get(getAdapterPosition()));
             }
         });
 
